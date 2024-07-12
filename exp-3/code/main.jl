@@ -44,8 +44,8 @@ errs = std(Freqs, dims=3)[:, :, 1]
 harmonics = mean(Freqs, dims=3)[:, :, 1]
 
 # Fitting the data to a logarithmic model
-model(x, p) = p[1] .+ p[2] * log.(x)
-X = heights
+model(x, p) = p[1] .+ p[2] * x
+X = 1 ./ heights
 Y_1 = harmonics[:, 1]
 Y_2 = harmonics[:, 2]
 Y_3 = harmonics[:, 3]
@@ -56,20 +56,16 @@ fit_2 = curve_fit(model, X, Y_2, [1.0, 1.0])
 fit_3 = curve_fit(model, X, Y_3, [1.0, 1.0])
 fit_4 = curve_fit(model, X, Y_4, [1.0, 1.0])
 
-plot(heights, model(heights, fit_1.param), c=:darkblue, ribbon=stderror(fit_1),
-    label="1st: y = a + b×log(x), a = $(round(fit_1.param[1], digits=2)), b = $(round(fit_1.param[2], digits=2))")
-plot!(heights, harmonics[:, 1], label=nothing, ls=:dash, c=:black, yerr=errs[:, 1])
-plot!(heights, model(heights, fit_2.param), c=:darkred, ribbon=stderror(fit_2),
-    label="2nd: y = a + b×log(x), a = $(round(fit_2.param[1], digits=2)), b = $(round(fit_2.param[2], digits=2))")
-plot!(heights, harmonics[:, 2], label=nothing, ls=:dash, c=:black, yerr=errs[:, 2])
-plot!(heights, model(heights, fit_3.param), c=:darkgreen, ribbon=stderror(fit_3),
-    label="3rd: y = a + b×log(x), a = $(round(fit_3.param[1], digits=2)), b = $(round(fit_3.param[2], digits=2))")
-plot!(heights, harmonics[:, 3], label=nothing, ls=:dash, c=:black, yerr=errs[:, 3])
-plot!(heights, model(heights, fit_4.param), c=:darkorange, ribbon=stderror(fit_4),
-    label="4th: y = a + b×log(x), a = $(round(fit_4.param[1], digits=2)), b = $(round(fit_4.param[2], digits=2))")
-plot!(heights, harmonics[:, 4], label=nothing, ls=:dash, c=:black, yerr=errs[:, 4])
-plot!(xlabel="Height (cm)", ylabel="Frequency (Hz)", title="Frequency vs Height - Straw", legend=:topright,
-    yscale=:log10, ylims=(500, 25000), yticks=exp10.(2:0.5:4), frame=:box)
+plot(X, model(X, fit_1.param), c=:darkblue, label="1st: y = a + b.x, a = $(round(fit_1.param[1], digits=2)), b = $(round(fit_1.param[2], digits=2))")
+plot!(X, harmonics[:, 1], label=nothing, ls=:dash, c=:black, yerr=errs[:, 1])
+plot!(X, model(X, fit_2.param), c=:darkred, label="2nd: y = a + b.x, a = $(round(fit_2.param[1], digits=2)), b = $(round(fit_2.param[2], digits=2))")
+plot!(X, harmonics[:, 2], label=nothing, ls=:dash, c=:black, yerr=errs[:, 2])
+plot!(X, model(X, fit_3.param), c=:darkgreen, label="3rd: y = a + b.x, a = $(round(fit_3.param[1], digits=2)), b = $(round(fit_3.param[2], digits=2))")
+plot!(X, harmonics[:, 3], label=nothing, ls=:dash, c=:black, yerr=errs[:, 3])
+plot!(X, model(X, fit_4.param), c=:darkorange, label="4th: y = a + b.x, a = $(round(fit_4.param[1], digits=2)), b = $(round(fit_4.param[2], digits=2))")
+plot!(X, harmonics[:, 4], label=nothing, ls=:dash, c=:black, yerr=errs[:, 4])
+plot!(xlabel="Height⁻¹ (1/cm)", ylabel="Frequency (Hz)", title="Frequency vs Height⁻¹ - Straw", legend=:topleft,
+    ylims=(200, 15000), frame=:box)
 savefig(FiguresDir * "FrequencyVsHeight.png")
 
 # Saving the data
