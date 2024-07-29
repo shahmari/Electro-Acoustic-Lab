@@ -36,6 +36,13 @@ for i ∈ 1:NumTrials
     push!(PeakFreqs2, freqaxis[i_+3000])
 end
 
+############################ Plots:
+############################ Frequencies
+plot(Heights, PeakFreqs1, m=:c, label="First Harmonic Frequencies", c=:steelblue)
+plot!(Heights, PeakFreqs2, m=:s, label="Second Harmonic Frequencies", c=:purple)
+plot!(title="Frequency of Tones, Percussion", frame=:box, xlabel="Height (CM)", ylabel="Frequency (Hz)", legend=:right)
+savefig(FiguresDir * "Exp6-P1-Freqs.png")
+
 ############################ First Harmonic
 X = (((H1FE ./ PeakFreqs1) .^ 2) .- 1) .^ 0.25
 Y = Heights
@@ -57,7 +64,7 @@ X_err = begin
     X .* sqrt((fit_err[1] / p[1])^2 + (fit_err[2] / p[2])^2)
 end
 scatter(X, Y, label="Data", c=:red, yerr=fill(Heights_err, length(X)), xerr=X_err, ms=2)
-plot!(0.2:0.01:1.25, model(0.2:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)),\nβ=$(round(β, digits=2))", xlabel="X (Hz)", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
+plot!(0.2:0.01:1.25, model(0.2:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)),\nβ=$(round(β, digits=2))", xlabel="X", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
 savefig(FiguresDir * "Exp6-P1-H1.png")
 
 ############################ Second Harmonic
@@ -81,7 +88,7 @@ X_err = begin
     X .* sqrt((fit_err[1] / p[1])^2 + (fit_err[2] / p[2])^2)
 end
 scatter(X, Y, label="Data", c=:red, yerr=fill(Heights_err, length(X)), xerr=X_err, ms=2)
-plot!(0.1:0.01:1.25, model(0.1:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)) ± $(round(H☆_err, digits=3)),\nβ=$(round(β, digits=2))  ± $(round(β_err, digits=3))", xlabel="X (Hz)", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
+plot!(0.1:0.01:1.25, model(0.1:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)) ± $(round(H☆_err, digits=3)),\nβ=$(round(β, digits=2))  ± $(round(β_err, digits=3))", xlabel="X", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
 savefig(FiguresDir * "Exp6-P1-H2.png")
 
 ############################ saving the data
@@ -126,6 +133,13 @@ for i ∈ 1:10
     push!(ErrFreqs2, std(TPF2))
 end
 
+############################ Plots:
+############################ Frequencies
+plot(Heights, PeakFreqs1, m=:c, label="First Harmonic Frequencies", c=:steelblue)
+plot!(Heights, PeakFreqs2, m=:s, label="Second Harmonic Frequencies", c=:purple)
+plot!(title="Frequency of Tones, None-Percussion", frame=:box, xlabel="Height (CM)", ylabel="Frequency (Hz)", legend=:right)
+savefig(FiguresDir * "Exp6-P2-Freqs.png")
+
 ############################ First Harmonic
 X = (((H1FE ./ PeakFreqs1) .^ 2) .- 1) .^ 0.25
 Y = Heights
@@ -141,7 +155,7 @@ H☆_err = fit_err[1]
 β_err = fit_err[2]
 X_err = X .* sqrt.((ErrFreqs1 ./ PeakFreqs1) .^ 2 .+ (fit_err[1] / p[1])^2)
 scatter(X, Y, label="Data", c=:red, yerr=fill(Heights_err, length(X)), xerr=X_err, ms=2)
-plot!(0.2:0.01:1.25, model(0.2:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)) ± $(round(H☆_err, digits=3)),\nβ=$(round(β, digits=2))  ± $(round(β_err, digits=3))", xlabel="X (Hz)", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
+plot!(0.2:0.01:1.25, model(0.2:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)) ± $(round(H☆_err, digits=3)),\nβ=$(round(β, digits=2))  ± $(round(β_err, digits=3))", xlabel="X", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
 savefig(FiguresDir * "Exp6-P2-H1.png")
 
 ############################ Second Harmonic
@@ -159,7 +173,7 @@ H☆_err = fit_err[1]
 β_err = fit_err[2]
 X_err = X .* sqrt.((ErrFreqs2 ./ PeakFreqs2) .^ 2 .+ (fit_err[1] / p[1])^2)
 scatter(X, Y, label="Data", c=:red, yerr=fill(Heights_err, length(X)), xerr=X_err, ms=2)
-plot!(0.2:0.01:1.25, model(0.2:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)) ± $(round(H☆_err, digits=3)),\nβ=$(round(β, digits=2))  ± $(round(β_err, digits=3))", xlabel="X (Hz)", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
+plot!(0.2:0.01:1.25, model(0.2:0.01:1.25, p), c=:blue, label="H* = $(round(H☆, digits=2)) ± $(round(H☆_err, digits=3)),\nβ=$(round(β, digits=2))  ± $(round(β_err, digits=3))", xlabel="X", ylabel="Heights (cm)", legend=:bottomleft, frame=:box)
 savefig(FiguresDir * "Exp6-P2-H2.png")
 
 ############################ saving the data
